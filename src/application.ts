@@ -31,7 +31,7 @@ import {
   TokenServiceConstants,
   AccountServiceBindings,
   SystemConfiguration,
-  MealServiceBindings,
+  TaskServiceBindings,
   FileUploadServiceBindings,
   S3ServiceBindings,
   UtilitiesServiceBindings,
@@ -44,7 +44,7 @@ import {EnvService} from './infrastructure/services/env.service';
 import {AuthTokenService} from './application/services/token.service';
 import {MailService} from './application/services/mail.service';
 import {HtmlParserService} from './infrastructure/services/htmlparser.service';
-// import {MealService} from './application/services/meal.service';
+import {TaskService} from './application/services/task.service';
 import {S3Service} from './application/services/s3.service';
 import {UtilitiesService} from './infrastructure/services/utilities.service';
 
@@ -191,7 +191,7 @@ export class Application extends BootMixin(
       .toProvider(RbacAuthorizationProvider)
       .tag(AuthorizationTags.AUTHORIZER);
 
-    // this.bind(MealServiceBindings.MEAL_SERVICE).toClass(MealService);
+    this.bind(TaskServiceBindings.TASK_SERVICE).toClass(TaskService);
 
     this.bind(S3ServiceBindings.S3_SERVICE).toClass(S3Service);
 

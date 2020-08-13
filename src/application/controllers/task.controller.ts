@@ -26,14 +26,17 @@ import {inject} from '@loopback/context';
 import {authorize, AUTHENTICATED} from '@loopback/authorization';
 import {Tag} from '../../domain/models/tag.model';
 import {TaskRepository} from '../../infrastructure/repositories';
+import {TaskServiceBindings} from '../../keys';
+import {TaskService} from '../services/task.service';
 
 export class TaskController {
   constructor(
     @repository(TaskRepository)
     public taskRepository: TaskRepository,
-  ) // @inject(S3ServiceBindings.S3_SERVICE)
-  // private s3Service: S3Service,
-  {}
+
+    @inject(TaskServiceBindings.TASK_SERVICE)
+    private taskService: TaskService,
+  ) {}
 
   @post('/tasks', {
     responses: {

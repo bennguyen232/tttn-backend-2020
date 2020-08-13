@@ -114,8 +114,8 @@ export namespace AuthorizationBindings {
   export const RBAC_AUTHORIZATION_PROVIDER = 'authorization.casbin.provider';
 }
 
-export namespace MealServiceBindings {
-  export const MEAL_SERVICE = BindingKey.create('services.meal');
+export namespace TaskServiceBindings {
+  export const TASK_SERVICE = BindingKey.create('services.task');
 }
 
 export type FileUploadHandler = RequestHandler;
