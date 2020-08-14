@@ -1,9 +1,12 @@
 import {inject} from '@loopback/context';
 import {repository, juggler} from '@loopback/repository';
-import {ObjectId} from 'mongodb';
-import {HttpErrors} from '@loopback/rest';
-import * as _ from 'lodash';
-import {SecurityBindings, UserProfile, securityId} from '@loopback/security';
+// import {ObjectId} from 'mongodb';
+// import {HttpErrors} from '@loopback/rest';
+import {
+  SecurityBindings,
+  UserProfile,
+  //  securityId
+} from '@loopback/security';
 import {TagRepository} from '../../infrastructure/repositories/tag.repository';
 
 export class TaskService {

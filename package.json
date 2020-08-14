@@ -1,5 +1,5 @@
 {
-  "name": "TTTN-2020",
+  "name": "tttn-2020",
   "version": "1.0.9",
   "description": "Backend boilerplate codebase based on Loopback 4 framework",
   "engines": {

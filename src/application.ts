@@ -37,7 +37,7 @@ import {
   UtilitiesServiceBindings,
 } from './keys';
 import {SystemService} from './application/services/system.service';
-import {RbacAuthorizationProvider} from './application/services/authorizer';
+import {RbacAuthorizationProvider} from './application/services/authorizer.service';
 import {NodeMailerMailService} from './infrastructure/services/nodemailer.service';
 import {SecuredJwtService} from './infrastructure/services/securedjwt.service';
 import {EnvService} from './infrastructure/services/env.service';

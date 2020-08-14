@@ -1,5 +1,5 @@
 import * as validator from 'validator';
-import {model, property, hasMany} from '@loopback/repository';
+import {model, property} from '@loopback/repository';
 import {TimestampEntity} from '../mixin/timestamp.mixin';
 
 export interface PasswordHasher {

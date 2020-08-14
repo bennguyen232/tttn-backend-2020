@@ -1,12 +1,12 @@
 import {
   juggler,
-  HasManyRepositoryFactory,
-  repository,
+  // HasManyRepositoryFactory,
+  // repository,
 } from '@loopback/repository';
 import {inject} from '@loopback/core';
 import {Account, AccountRelations} from '../../domain/models/account.model';
 import {TimestampRepository} from './mixin/timestamp.mixin';
-import {Getter} from '@loopback/context';
+// import {Getter} from '@loopback/context';
 
 export type Credentials = {
   email: string;
@@ -28,10 +28,9 @@ export class AccountRepository extends TimestampRepository<
   // >;
 
   constructor(
-    @inject('datasources.db') protected datasource: juggler.DataSource,
-    // @repository.getter('MealProfileRepository')
-    // protected todoRepositoryGetter: Getter<MealProfileRepository>,
-  ) {
+    @inject('datasources.db') protected datasource: juggler.DataSource, // @repository.getter('MealProfileRepository')
+  ) // protected todoRepositoryGetter: Getter<MealProfileRepository>,
+  {
     super(Account, datasource);
 
     // this.mealProfiles = this.createHasManyRepositoryFactoryFor(
