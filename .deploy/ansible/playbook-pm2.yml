@@ -1,6 +1,0 @@
----
-- hosts: default
-  tasks:
-    - shell: npm i -g pm2
-      become: yes
-      become_user: root

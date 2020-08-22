@@ -1,6 +1,0 @@
----
-- hosts: default
-  roles:
-    - role: geerlingguy.nginx
-      become: yes
-      become_user: root

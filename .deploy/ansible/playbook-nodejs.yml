@@ -1,8 +1,0 @@
----
-- hosts: default
-  vars:
-    nodejs_version: "12.x"
-  roles:
-    - role: nodesource.node
-      become: yes
-      become_user: root

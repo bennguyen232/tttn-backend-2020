@@ -1,22 +1,39 @@
-import {ApplicationConfig} from '@loopback/core';
-import {Application} from './application';
+import {AppApplication, ApplicationConfig} from './application';
 
-export {Application};
+export * from './application';
 
 export async function main(options: ApplicationConfig = {}) {
-  const app = new Application(options);
+  const app = new AppApplication(options);
   await app.boot();
   await app.start();
 
-  const url = process.env.BASE_URL || 'http://127.0.0.1:3000';
+  const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
-
-  if (
-    !options.rest.openApiSpec.disabled &&
-    !options.rest.apiExplorer.disabled
-  ) {
-    console.log(`API explorer is running at ${url}/api/explorer`);
-  }
+  console.log(`Try ${url}/ping`);
 
   return app;
+}
+
+if (require.main === module) {
+  // Run the application
+  const config = {
+    rest: {
+      port: Number(process.env.PORT || '3000'),
+      host: process.env.HOST || 'localhost',
+      // The `gracePeriodForClose` provides a graceful close for http/https
+      // servers with keep-alive clients. The default value is `Infinity`
+      // (don't force-close). If you want to immediately destroy all sockets
+      // upon stop, set its value to `0`.
+      // See https://www.npmjs.com/package/stoppable
+      gracePeriodForClose: 5000, // 5 seconds
+      openApiSpec: {
+        // useful when used with OpenAPI-to-GraphQL to locate your application
+        setServersFromRequest: true,
+      },
+    },
+  };
+  main(config).catch(err => {
+    console.error('Cannot start the application.', err);
+    process.exit(1);
+  });
 }

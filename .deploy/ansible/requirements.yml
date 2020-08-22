@@ -1,4 +1,0 @@
-- src: nodesource.node
-- src: undergreen.mongodb
-  version: "v2.6.0"
-- src: geerlingguy.nginx

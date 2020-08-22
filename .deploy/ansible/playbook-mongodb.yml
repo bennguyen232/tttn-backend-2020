@@ -1,8 +1,0 @@
----
-- hosts: default
-  vars:
-    mongodb_version: "4.2.0"
-  roles:
-    - role: undergreen.mongodb
-      become: yes
-      become_user: root

@@ -1,6 +1,3 @@
-# IOS
-.DS_Store
-
 # Logs
 logs
 *.log
@@ -44,7 +41,6 @@ typings/
 
 # Optional npm cache directory
 .npm
-yarn.lock
 
 # Optional eslint cache
 .eslintcache
@@ -66,14 +62,3 @@ yarn.lock
 
 # Cache used by TypeScript's incremental build
 *.tsbuildinfo
-
-# IDE
-.idea
-.vscode
-./data
-
-# Build
-.deploy/bundle
-.deploy/bundle.tar.gz
-dist
-.sandbox
