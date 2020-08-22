@@ -24,7 +24,7 @@ export class UserService implements UserServiceAuth<MyUser, Credentials> {
   // User --> MyUser
   async verifyCredentials(credentials: Credentials): Promise<MyUser> {
     const foundUser = await this.userRepository.findOne({
-      where: {Username: credentials.username},
+      where: {UserName: credentials.username},
     });
     if (!foundUser) {
       throw new HttpErrors.Unauthorized(INVALID_CREDENTIAL_ERROR);
@@ -46,9 +46,9 @@ export class UserService implements UserServiceAuth<MyUser, Credentials> {
   convertToUserProfile(user: MyUser): UserProfile {
     return {
       [securityId]: user.Id.toString(),
-      name: user.Username,
+      name: user.UserName,
       id: user.Id,
-      email: user.Username,
+      email: user.UserName,
     };
   }
 
