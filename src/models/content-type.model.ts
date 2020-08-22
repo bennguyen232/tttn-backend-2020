@@ -35,7 +35,7 @@ export class ContentType extends Entity {
   Styles?: string;
 
   @belongsTo(() => CategoryType)
-  categoryTypeId: string;
+  CategoryTypeId: string;
 
   constructor(data?: Partial<ContentType>) {
     super(data);

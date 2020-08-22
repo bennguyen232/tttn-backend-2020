@@ -13,24 +13,13 @@ export class ContentTypeRepository extends DefaultCrudRepository<
   typeof ContentType.prototype.Id,
   ContentTypeRelations
 > {
-  public readonly categoryType: BelongsToAccessor<
-    CategoryType,
-    typeof ContentType.prototype.Id
-  >;
+  public readonly CategoryType: BelongsToAccessor<CategoryType, typeof ContentType.prototype.Id>;
 
   constructor(
-    @inject('datasources.db') dataSource: DbDataSource,
-    @repository.getter('CategoryTypeRepository')
-    protected categoryTypeRepositoryGetter: Getter<CategoryTypeRepository>,
+    @inject('datasources.db') dataSource: DbDataSource, @repository.getter('CategoryTypeRepository') protected categoryTypeRepositoryGetter: Getter<CategoryTypeRepository>,
   ) {
     super(ContentType, dataSource);
-    this.categoryType = this.createBelongsToAccessorFor(
-      'categoryType',
-      categoryTypeRepositoryGetter,
-    );
-    this.registerInclusionResolver(
-      'categoryType',
-      this.categoryType.inclusionResolver,
-    );
+    this.CategoryType = this.createBelongsToAccessorFor('CategoryType', categoryTypeRepositoryGetter,);
+    this.registerInclusionResolver('CategoryType', this.CategoryType.inclusionResolver);
   }
 }

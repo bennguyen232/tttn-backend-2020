@@ -187,6 +187,6 @@ export class ContentTypeController {
   async getCategoryTypeById(
     @param.path.string('id') id: typeof ContentType.prototype.Id,
   ): Promise<CategoryType> {
-    return this.contentTypeRepository.categoryType(id);
+    return this.contentTypeRepository.CategoryType(id);
   }
 }

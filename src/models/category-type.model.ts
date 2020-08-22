@@ -23,8 +23,8 @@ export class CategoryType extends Entity {
   })
   Description?: string;
 
-  @hasMany(() => ContentType)
-  contentTypes: ContentType[];
+  @hasMany(() => ContentType, {keyTo: 'CategoryTypeId'})
+  ContentTypes: ContentType[];
 
   constructor(data?: Partial<CategoryType>) {
     super(data);

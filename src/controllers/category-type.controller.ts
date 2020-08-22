@@ -192,7 +192,7 @@ export class CategoryTypeController {
     @param.path.string('id') id: string,
     @param.query.object('filter') filter?: Filter<ContentType>,
   ): Promise<ContentType[]> {
-    return this.categoryTypeRepository.contentTypes(id).find(filter);
+    return this.categoryTypeRepository.ContentTypes(id).find(filter);
   }
 
   @post('/category-types/{id}/content-types', {
@@ -215,14 +215,14 @@ export class CategoryTypeController {
           schema: getModelSchemaRef(ContentType, {
             title: 'NewContentTypeInCategoryType',
             exclude: ['Id'],
-            optional: ['categoryTypeId'],
+            optional: ['CategoryTypeId'],
           }),
         },
       },
     })
     contentType: Omit<ContentType, 'Id'>,
   ): Promise<ContentType> {
-    return this.categoryTypeRepository.contentTypes(id).create(contentType);
+    return this.categoryTypeRepository.ContentTypes(id).create(contentType);
   }
 
   @patch('/category-types/{id}/content-types', {
@@ -247,7 +247,7 @@ export class CategoryTypeController {
     where?: Where<ContentType>,
   ): Promise<Count> {
     return this.categoryTypeRepository
-      .contentTypes(id)
+      .ContentTypes(id)
       .patch(contentType, where);
   }
 
@@ -264,6 +264,6 @@ export class CategoryTypeController {
     @param.query.object('where', getWhereSchemaFor(ContentType))
     where?: Where<ContentType>,
   ): Promise<Count> {
-    return this.categoryTypeRepository.contentTypes(id).delete(where);
+    return this.categoryTypeRepository.ContentTypes(id).delete(where);
   }
 }

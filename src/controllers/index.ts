@@ -11,3 +11,5 @@ export * from './user-role-role.controller';
 export * from './user-role-user.controller';
 export * from './role-user-role.controller';
 export * from './user-user-role.controller';
+export * from './content-type-category-type.controller';
+export * from './category-type-content-type.controller';
