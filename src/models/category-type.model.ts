@@ -13,6 +13,7 @@ export class CategoryType extends Entity {
   @property({
     type: 'string',
     required: true,
+    default: '',
   })
   Name: string;
 

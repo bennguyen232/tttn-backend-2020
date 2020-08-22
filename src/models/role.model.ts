@@ -16,6 +16,12 @@ export class Role extends Entity {
   })
   Name: string;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  Description: string;
+
   @hasMany(() => UserRole, {keyTo: 'RoleId'})
   UserRoles: UserRole[];
 

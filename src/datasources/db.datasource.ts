@@ -8,7 +8,7 @@ const config = {
   port: parseInt(process.env.DB_PORT || '') || 1433,
   user: process.env.DB_USER || 'remote',
   password: process.env.DB_PASSWORD || '123',
-  database: process.env.DB_DATABASE || 'test',
+  database: process.env.DB_DATABASE || 'DeTaiThucTap',
 };
 
 // Observe application's life cycle to disconnect the datasource when

@@ -2,19 +2,7 @@ import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Role} from './role.model';
 import {User} from './user.model';
 
-@model({
-  settings: {
-    strict: true,
-    foreignKeys: {
-      fk_userRole_roleId: {
-        name: 'fk_userRole_roleId',
-        entity: 'role',
-        entityKey: 'Id',
-        foreignKey: 'roleId',
-      },
-    },
-  },
-})
+@model({settings: {strict: true}})
 export class UserRole extends Entity {
   @property({
     type: 'string',

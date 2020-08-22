@@ -4,7 +4,7 @@ import {HttpErrors} from '@loopback/rest';
 import {securityId, UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
 // User --> MyUser
-import {User as MyUser} from '../models';
+import {User as MyUser, Role} from '../models';
 // UserRepository --> MyUserRepository
 import {UserRepository as MyUserRepository} from '../repositories';
 import {INVALID_CREDENTIAL_ERROR} from '../constants';
@@ -50,5 +50,9 @@ export class UserService implements UserServiceAuth<MyUser, Credentials> {
       id: user.Id,
       email: user.Username,
     };
+  }
+
+  addRoleById(): Role {
+    return {} as Role;
   }
 }

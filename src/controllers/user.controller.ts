@@ -158,4 +158,34 @@ export class UserController {
     console.log('user-login: ', _id);
     return this.userRepository.findById(_id);
   }
+
+  @authenticate('jwt')
+  @post('users/{id}/role/{roleId}', {
+    responses: {
+      '200': {
+        description: 'User add role',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  })
+  async addRoleById(
+    @inject(SecurityBindings.USER)
+    currentUserProfile: UserProfile,
+    @param.path.string('id') id: string,
+    @param.path.string('roleId') roleId: string,
+  ): Promise<User> {
+    // const password = await hash(newUserRequest.Password, await genSalt());
+    // Object.assign(newUserRequest, {Password: password});
+    // console.log({newUserRequest});
+    // const savedUser = await this.userRepository.create(newUserRequest);
+    // return savedUser;
+    return {} as User;
+  }
+
 }

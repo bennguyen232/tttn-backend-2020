@@ -1,19 +1,7 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {CategoryType} from './category-type.model';
 
-@model({
-  settings: {
-    strict: true,
-    foreignKeys: {
-      Fk_ContentType_CategoryTypeId: {
-        name: 'Fk_ContentType_CategoryTypeId',
-        entity: 'CategoryType',
-        entityKey: 'Id',
-        foreignKey: 'CategoryTypeId',
-      },
-    },
-  },
-})
+@model({settings: {strict: true}})
 export class ContentType extends Entity {
   @property({
     type: 'string',
