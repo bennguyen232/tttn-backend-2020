@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {ContentType} from './content-type.model';
+import {Project} from './project.model';
 
 @model({settings: {strict: true}})
 export class ContentTypeDetail extends Entity {
@@ -8,6 +10,12 @@ export class ContentTypeDetail extends Entity {
     generated: true,
   })
   Id?: string;
+
+  @belongsTo(() => ContentType)
+  ContentTypeId: string;
+
+  @belongsTo(() => Project)
+  ProjectId: string;
 
   constructor(data?: Partial<ContentTypeDetail>) {
     super(data);
