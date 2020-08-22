@@ -15,3 +15,8 @@ export * from './content-type-category-type.controller';
 export * from './category-type-content-type.controller';
 export * from './content-type-detail-content-type.controller';
 export * from './content-type-detail-project.controller';
+export * from './project-member-project.controller';
+export * from './project-member-user.controller';
+export * from './project-project-member.controller';
+export * from './user-project-member.controller';
+export * from './project.controller';

@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {ProjectMember} from './project-member.model';
 
 @model({settings: {strict: false}})
 export class Project extends Entity {
@@ -41,6 +42,9 @@ export class Project extends Entity {
     type: 'date',
   })
   UpdatedAt?: string;
+
+  @hasMany(() => ProjectMember, {keyTo: 'ProjectId'})
+  ProjectMembers: ProjectMember[];
 
   constructor(data?: Partial<Project>) {
     super(data);

@@ -1,5 +1,6 @@
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {UserRole} from './user-role.model';
+import {ProjectMember} from './project-member.model';
 
 @model({settings: {strict: true}})
 export class User extends Entity {

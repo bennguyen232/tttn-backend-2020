@@ -1,6 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Project} from './project.model';
+import {User} from './user.model';
 
-@model({settings: {strict: false}})
+@model({settings: {strict: true}})
 export class ProjectMember extends Entity {
   @property({
     type: 'string',
@@ -9,11 +11,11 @@ export class ProjectMember extends Entity {
   })
   Id?: string;
 
-  // Define well-known properties here
+  @belongsTo(() => Project)
+  ProjectId: string;
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [prop: string]: any;
+  @belongsTo(() => User)
+  UserId: string;
 
   constructor(data?: Partial<ProjectMember>) {
     super(data);

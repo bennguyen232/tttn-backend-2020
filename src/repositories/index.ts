@@ -8,3 +8,4 @@ export * from './content-type-detail.repository';
 export * from './issue.repository';
 export * from './project-member.repository';
 export * from './project.repository';
+export * from './issue-type.repository';
