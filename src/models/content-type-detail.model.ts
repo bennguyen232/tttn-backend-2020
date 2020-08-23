@@ -1,6 +1,7 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {ContentType} from './content-type.model';
 import {Project} from './project.model';
+import {IssueType} from './issue-type.model';
 
 @model({settings: {strict: true}})
 export class ContentTypeDetail extends Entity {
@@ -16,6 +17,9 @@ export class ContentTypeDetail extends Entity {
 
   @belongsTo(() => Project)
   ProjectId: string;
+
+  @hasMany(() => IssueType, {keyTo: 'ContentTypeDetailId'})
+  IssueTypes: IssueType[];
 
   constructor(data?: Partial<ContentTypeDetail>) {
     super(data);

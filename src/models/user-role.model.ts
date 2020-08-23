@@ -1,6 +1,7 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {Role} from './role.model';
 import {User} from './user.model';
+import {ProjectMember} from './project-member.model';
 
 @model({settings: {strict: true}})
 export class UserRole extends Entity {
@@ -16,6 +17,9 @@ export class UserRole extends Entity {
 
   @belongsTo(() => User)
   UserId: string;
+
+  @hasMany(() => ProjectMember, {keyTo: 'UserRoleId'})
+  ProjectMembers: ProjectMember[];
 
   constructor(data?: Partial<UserRole>) {
     super(data);

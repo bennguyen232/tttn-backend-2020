@@ -1,4 +1,14 @@
-import {Entity, model, property} from '@loopback/repository';
+import {
+  Entity,
+  model,
+  property,
+  hasMany,
+  belongsTo,
+} from '@loopback/repository';
+import {IssueType} from './issue-type.model';
+import {Project} from './project.model';
+import {Sprint} from './sprint.model';
+import {User} from './user.model';
 
 @model({settings: {strict: false}})
 export class Issue extends Entity {
@@ -17,7 +27,7 @@ export class Issue extends Entity {
 
   @property({
     type: 'string',
-    default: '' ,
+    default: '',
   })
   Description?: string;
 
@@ -36,6 +46,27 @@ export class Issue extends Entity {
     type: 'date',
   })
   UpdatedAt?: string;
+
+  @hasMany(() => IssueType, {keyTo: 'IssueId'})
+  IssueTypes: IssueType[];
+
+  @belongsTo(() => Issue)
+  IssueParentId: string;
+
+  @belongsTo(() => Project)
+  ProjectId: string;
+
+  @belongsTo(() => Sprint)
+  SprintId: string;
+
+  @hasMany(() => Issue, {keyTo: 'IssueParentId'})
+  IssuesChildren: Issue[];
+
+  @belongsTo(() => User)
+  UserCreatedId: string;
+
+  @belongsTo(() => User)
+  AssigneeId: string;
 
   constructor(data?: Partial<Issue>) {
     super(data);

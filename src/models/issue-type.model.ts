@@ -1,6 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {ContentTypeDetail} from './content-type-detail.model';
+import {Issue} from './issue.model';
 
-@model({settings: {strict: false}})
+@model({settings: {strict: true}})
 export class IssueType extends Entity {
   @property({
     type: 'string',
@@ -9,11 +11,11 @@ export class IssueType extends Entity {
   })
   Id?: string;
 
-  // Define well-known properties here
+  @belongsTo(() => ContentTypeDetail)
+  ContentTypeDetailId: string;
 
-  // Indexer property to allow additional data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [prop: string]: any;
+  @belongsTo(() => Issue)
+  IssueId: string;
 
   constructor(data?: Partial<IssueType>) {
     super(data);

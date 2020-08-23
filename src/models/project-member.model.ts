@@ -1,6 +1,7 @@
 import {Entity, model, property, belongsTo} from '@loopback/repository';
 import {Project} from './project.model';
 import {User} from './user.model';
+import {UserRole} from './user-role.model';
 
 @model({settings: {strict: true}})
 export class ProjectMember extends Entity {
@@ -14,8 +15,8 @@ export class ProjectMember extends Entity {
   @belongsTo(() => Project)
   ProjectId: string;
 
-  @belongsTo(() => User)
-  UserId: string;
+  @belongsTo(() => UserRole)
+  UserRoleId: string;
 
   constructor(data?: Partial<ProjectMember>) {
     super(data);

@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Issue} from './issue.model';
 
 @model({settings: {strict: true}})
 export class Sprint extends Entity {
@@ -19,6 +20,9 @@ export class Sprint extends Entity {
     type: 'string',
   })
   Description?: string;
+
+  @hasMany(() => Issue, {keyTo: 'SprintId'})
+  Issues: Issue[];
 
   constructor(data?: Partial<Sprint>) {
     super(data);

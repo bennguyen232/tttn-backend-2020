@@ -1,6 +1,8 @@
 import {Entity, model, property, hasMany} from '@loopback/repository';
 import {UserRole} from './user-role.model';
 import {ProjectMember} from './project-member.model';
+import {Project} from './project.model';
+import {Issue} from './issue.model';
 
 @model({settings: {strict: true}})
 export class User extends Entity {
@@ -55,6 +57,15 @@ export class User extends Entity {
 
   @hasMany(() => UserRole, {keyTo: 'UserId'})
   UserRoles: UserRole[];
+
+  @hasMany(() => Project, {keyTo: 'UserCreatedId'})
+  ProjectCreators: Project[];
+
+  @hasMany(() => Issue, {keyTo: 'UserCreatedId'})
+  IssueCreators: Issue[];
+
+  @hasMany(() => Issue, {keyTo: 'AssigneeId'})
+  IssueAssignees: Issue[];
 
   constructor(data?: Partial<User>) {
     super(data);

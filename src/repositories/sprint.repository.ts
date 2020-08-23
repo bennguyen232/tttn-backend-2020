@@ -1,14 +1,20 @@
-import {DefaultCrudRepository} from '@loopback/repository';
-import {Sprint, SprintRelations} from '../models';
+import {DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
+import {Sprint, SprintRelations, Issue} from '../models';
 import {DbDataSource} from '../datasources';
-import {inject} from '@loopback/core';
+import {inject, Getter} from '@loopback/core';
+import {IssueRepository} from './issue.repository';
 
 export class SprintRepository extends DefaultCrudRepository<
   Sprint,
   typeof Sprint.prototype.Id,
   SprintRelations
 > {
-  constructor(@inject('datasources.db') dataSource: DbDataSource) {
+
+  public readonly Issues: HasManyRepositoryFactory<Issue, typeof Sprint.prototype.Id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('IssueRepository') protected issueRepositoryGetter: Getter<IssueRepository>,) {
     super(Sprint, dataSource);
+    this.Issues = this.createHasManyRepositoryFactoryFor('Issues', issueRepositoryGetter,);
+    this.registerInclusionResolver('Issues', this.Issues.inclusionResolver);
   }
 }
