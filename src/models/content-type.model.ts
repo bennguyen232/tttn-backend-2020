@@ -33,6 +33,12 @@ export class ContentType extends Entity {
     default: '',
   })
   Styles?: string;
+  
+  @property({
+    type: 'boolean',
+    default: false,
+  })
+  IsDefault: boolean;
 
   @belongsTo(() => CategoryType)
   CategoryTypeId: string;

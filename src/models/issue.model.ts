@@ -10,7 +10,7 @@ import {Project} from './project.model';
 import {Sprint} from './sprint.model';
 import {User} from './user.model';
 
-@model({settings: {strict: false}})
+@model({settings: {strict: true}})
 export class Issue extends Entity {
   @property({
     type: 'string',

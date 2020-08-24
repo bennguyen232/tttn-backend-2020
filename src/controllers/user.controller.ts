@@ -155,7 +155,6 @@ export class UserController {
     @param.path.string('id') id: string,
   ): Promise<User> {
     const _id = id === 'me' ? currentUserProfile[securityId] : id;
-    console.log('user-login: ', _id);
     return this.userRepository.findById(_id);
   }
 

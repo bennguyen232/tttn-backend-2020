@@ -1,11 +1,16 @@
-import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
+import {
+  Entity,
+  model,
+  property,
+  hasMany,
+  belongsTo,
+} from '@loopback/repository';
 import {ProjectMember} from './project-member.model';
 import {ContentTypeDetail} from './content-type-detail.model';
 import {User} from './user.model';
 import {Issue} from './issue.model';
-import {UserRole} from './user-role.model';
 
-@model({settings: {strict: false}})
+@model({settings: {strict: true}})
 export class Project extends Entity {
   @property({
     type: 'string',
@@ -22,6 +27,7 @@ export class Project extends Entity {
 
   @property({
     type: 'string',
+    default: '',
   })
   Description?: string;
 
@@ -33,9 +39,9 @@ export class Project extends Entity {
 
   @property({
     type: 'boolean',
-    required: true,
+    default: true,
   })
-  IsActive: boolean;
+  IsActive?: boolean;
 
   @property({
     type: 'date',

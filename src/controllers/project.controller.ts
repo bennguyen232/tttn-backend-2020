@@ -15,15 +15,30 @@ import {
   put,
   del,
   requestBody,
+  HttpErrors,
 } from '@loopback/rest';
-import {Project} from '../models';
-import {ProjectRepository} from '../repositories';
+import {Project, Issue} from '../models';
+import {
+  ProjectRepository,
+  UserRoleRepository,
+  RoleRepository,
+  ProjectMemberRepository,
+} from '../repositories';
 import {authenticate} from '@loopback/authentication';
+import {inject} from '@loopback/core';
+import {SecurityBindings, UserProfile, securityId} from '@loopback/security';
+import _ from 'lodash';
 
 export class ProjectController {
   constructor(
     @repository(ProjectRepository)
     public projectRepository: ProjectRepository,
+    @repository(UserRoleRepository)
+    public userRoleRepository: UserRoleRepository,
+    @repository(RoleRepository)
+    private roleRepository: RoleRepository,
+    @repository(ProjectMemberRepository)
+    public projectMemberRepository: ProjectMemberRepository,
   ) {}
 
   @authenticate('jwt')
@@ -36,19 +51,58 @@ export class ProjectController {
     },
   })
   async create(
+    @inject(SecurityBindings.USER)
+    currentUserProfile: UserProfile,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Project, {
             title: 'NewProject',
-            exclude: ['Id'],
+            exclude: [
+              'Id',
+              'CreatedAt',
+              'UpdatedAt',
+              'UserCreatedId',
+              'IsActive',
+            ],
           }),
         },
       },
     })
-    project: Omit<Project, 'Id'>,
+    newProject: Omit<Project, 'Id'>,
   ): Promise<Project> {
-    return this.projectRepository.create(project);
+    const currentId = currentUserProfile[securityId];
+    Object.assign(newProject, {
+      UserCreatedId: currentId,
+    });
+    const project = await this.projectRepository.create(newProject);
+    const role = await this.roleRepository.findOne({
+      where: {Name: 'MANAGER'},
+    });
+    if (!role) throw new HttpErrors[404]('Role is not valid');
+
+    let userRoleId;
+    const userRole = await this.userRoleRepository.findOne({
+      where: {
+        RoleId: role.Id,
+        UserId: currentId,
+      },
+    });
+    if (!userRole) {
+      const {Id} = await this.userRoleRepository.create({
+        RoleId: role.Id,
+        UserId: currentId,
+      });
+      userRoleId = Id;
+    } else {
+      userRoleId = userRole.Id;
+    }
+
+    await this.projectMemberRepository.create({
+      ProjectId: project.Id,
+      UserRoleId: userRoleId,
+    });
+    return project;
   }
 
   @authenticate('jwt')
@@ -177,5 +231,26 @@ export class ProjectController {
   })
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.projectRepository.deleteById(id);
+  }
+
+  @authenticate('jwt')
+  @get('/projects/{id}/issues', {
+    responses: {
+      '200': {
+        description: 'Array of Project has many Issue',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Issue)},
+          },
+        },
+      },
+    },
+  })
+  async findIssuesByProjectId(
+    @param.path.string('id') id: string,
+  ): Promise<Issue[]> {
+    return this.projectRepository.Issues(id).find({
+      where: {IsActive: true},
+    });
   }
 }

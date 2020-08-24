@@ -20,7 +20,7 @@ import {
 import {CategoryType, ContentType} from '../models';
 import {CategoryTypeRepository} from '../repositories';
 
-export class CategoryTypeController {
+export class CategoryTypeController{
   constructor(
     @repository(CategoryTypeRepository)
     public categoryTypeRepository: CategoryTypeRepository,
