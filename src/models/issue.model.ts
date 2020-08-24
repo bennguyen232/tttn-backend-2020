@@ -7,7 +7,6 @@ import {
 } from '@loopback/repository';
 import {IssueType} from './issue-type.model';
 import {Project} from './project.model';
-import {Sprint} from './sprint.model';
 import {User} from './user.model';
 
 @model({settings: {strict: true}})
@@ -55,9 +54,6 @@ export class Issue extends Entity {
 
   @belongsTo(() => Project)
   ProjectId: string;
-
-  @belongsTo(() => Sprint)
-  SprintId: string;
 
   @hasMany(() => Issue, {keyTo: 'IssueParentId'})
   IssuesChildren: Issue[];

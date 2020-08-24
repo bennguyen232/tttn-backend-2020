@@ -8,7 +8,6 @@ import {VALIDATIONS_DEFAULT_DATA, ROLES} from '../data/setup';
 import {
   CategoryTypeRepository,
   ContentTypeRepository,
-  SprintRepository,
   ProjectRepository,
   RoleRepository,
 } from '../repositories';
@@ -21,8 +20,6 @@ export class AnotherController {
     private categoryTypeRepository: CategoryTypeRepository,
     @repository(ContentTypeRepository)
     private contentTypeRepository: ContentTypeRepository,
-    @repository(SprintRepository)
-    private sprintRepository: SprintRepository,
     @repository(ProjectRepository)
     private projectRepository: ProjectRepository,
     @repository(RoleRepository)

@@ -4,19 +4,11 @@ import {
   HasManyRepositoryFactory,
   BelongsToAccessor,
 } from '@loopback/repository';
-import {
-  Issue,
-  IssueRelations,
-  IssueType,
-  Project,
-  Sprint,
-  User,
-} from '../models';
+import {Issue, IssueRelations, IssueType, Project, User} from '../models';
 import {DbDataSource} from '../datasources';
 import {inject, Getter} from '@loopback/core';
 import {IssueTypeRepository} from './issue-type.repository';
 import {ProjectRepository} from './project.repository';
-import {SprintRepository} from './sprint.repository';
 import {UserRepository} from './user.repository';
 
 export class IssueRepository extends DefaultCrudRepository<
@@ -39,8 +31,6 @@ export class IssueRepository extends DefaultCrudRepository<
     typeof Issue.prototype.Id
   >;
 
-  public readonly Sprint: BelongsToAccessor<Sprint, typeof Issue.prototype.Id>;
-
   public readonly UserCreated: BelongsToAccessor<
     User,
     typeof Issue.prototype.Id
@@ -48,7 +38,10 @@ export class IssueRepository extends DefaultCrudRepository<
 
   public readonly Assignee: BelongsToAccessor<User, typeof Issue.prototype.Id>;
 
-  public readonly IssuesChildren: HasManyRepositoryFactory<Issue, typeof Issue.prototype.Id>;
+  public readonly IssuesChildren: HasManyRepositoryFactory<
+    Issue,
+    typeof Issue.prototype.Id
+  >;
 
   constructor(
     @inject('datasources.db') dataSource: DbDataSource,
@@ -58,14 +51,18 @@ export class IssueRepository extends DefaultCrudRepository<
     protected issueRepositoryGetter: Getter<IssueRepository>,
     @repository.getter('ProjectRepository')
     protected projectRepositoryGetter: Getter<ProjectRepository>,
-    @repository.getter('SprintRepository')
-    protected sprintRepositoryGetter: Getter<SprintRepository>,
     @repository.getter('UserRepository')
     protected userRepositoryGetter: Getter<UserRepository>,
   ) {
     super(Issue, dataSource);
-    this.IssuesChildren = this.createHasManyRepositoryFactoryFor('IssuesChildren', issueRepositoryGetter,);
-    this.registerInclusionResolver('IssuesChildren', this.IssuesChildren.inclusionResolver);
+    this.IssuesChildren = this.createHasManyRepositoryFactoryFor(
+      'IssuesChildren',
+      issueRepositoryGetter,
+    );
+    this.registerInclusionResolver(
+      'IssuesChildren',
+      this.IssuesChildren.inclusionResolver,
+    );
     this.Assignee = this.createBelongsToAccessorFor(
       'Assignee',
       userRepositoryGetter,
@@ -79,11 +76,6 @@ export class IssueRepository extends DefaultCrudRepository<
       'UserCreated',
       this.UserCreated.inclusionResolver,
     );
-    this.Sprint = this.createBelongsToAccessorFor(
-      'Sprint',
-      sprintRepositoryGetter,
-    );
-    this.registerInclusionResolver('Sprint', this.Sprint.inclusionResolver);
     this.Project = this.createBelongsToAccessorFor(
       'Project',
       projectRepositoryGetter,

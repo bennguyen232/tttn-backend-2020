@@ -1,4 +1,10 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {
+  Entity,
+  model,
+  property,
+  belongsTo,
+  hasMany,
+} from '@loopback/repository';
 import {ContentType} from './content-type.model';
 import {Project} from './project.model';
 import {IssueType} from './issue-type.model';
@@ -11,6 +17,12 @@ export class ContentTypeDetail extends Entity {
     generated: true,
   })
   Id?: string;
+
+  @property({
+    type: 'boolean',
+    default: true,
+  })
+  IsActive?: boolean;
 
   @belongsTo(() => ContentType)
   ContentTypeId: string;
@@ -30,4 +42,5 @@ export interface ContentTypeDetailRelations {
   // describe navigational properties here
 }
 
-export type ContentTypeDetailWithRelations = ContentTypeDetail & ContentTypeDetailRelations;
+export type ContentTypeDetailWithRelations = ContentTypeDetail &
+  ContentTypeDetailRelations;

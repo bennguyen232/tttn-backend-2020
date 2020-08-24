@@ -23,22 +23,42 @@ import {
   UserRoleRepository,
   RoleRepository,
   ProjectMemberRepository,
+  ContentTypeDetailRepository,
+  ContentTypeRepository,
 } from '../repositories';
 import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
 import {SecurityBindings, UserProfile, securityId} from '@loopback/security';
 import _ from 'lodash';
+import {DbDataSource} from '../datasources';
+
+interface ProjectConfig {
+  Id: string;
+  Name: string;
+  ContentTypeDescription: string;
+  IconName: string;
+  Styles: string;
+  CategoryTypeId: string;
+  CategoryTypeName: string;
+  CategoryTypeDescription: string;
+  IsActive: true;
+  IsDefault: true;
+}
 
 export class ProjectController {
   constructor(
     @repository(ProjectRepository)
-    public projectRepository: ProjectRepository,
+    private projectRepository: ProjectRepository,
     @repository(UserRoleRepository)
-    public userRoleRepository: UserRoleRepository,
+    private userRoleRepository: UserRoleRepository,
     @repository(RoleRepository)
     private roleRepository: RoleRepository,
     @repository(ProjectMemberRepository)
-    public projectMemberRepository: ProjectMemberRepository,
+    private projectMemberRepository: ProjectMemberRepository,
+    @repository(ContentTypeDetailRepository)
+    private contentTypeDetailRepository: ContentTypeDetailRepository,
+    @repository(ContentTypeRepository)
+    private contentTypeRepository: ContentTypeRepository,
   ) {}
 
   @authenticate('jwt')
@@ -80,7 +100,6 @@ export class ProjectController {
       where: {Name: 'MANAGER'},
     });
     if (!role) throw new HttpErrors[404]('Role is not valid');
-
     let userRoleId;
     const userRole = await this.userRoleRepository.findOne({
       where: {
@@ -97,11 +116,20 @@ export class ProjectController {
     } else {
       userRoleId = userRole.Id;
     }
-
     await this.projectMemberRepository.create({
       ProjectId: project.Id,
       UserRoleId: userRoleId,
     });
+    const defaultConfigs = await this.contentTypeRepository.find({
+      where: {IsDefault: true},
+    });
+    for (const item of defaultConfigs) {
+      await this.contentTypeDetailRepository.create({
+        ProjectId: project.Id,
+        ContentTypeId: item.Id,
+        IsActive: true,
+      });
+    }
     return project;
   }
 
@@ -233,7 +261,7 @@ export class ProjectController {
     await this.projectRepository.deleteById(id);
   }
 
-  @authenticate('jwt')
+  // @authenticate('jwt')
   @get('/projects/{id}/issues', {
     responses: {
       '200': {
@@ -252,5 +280,51 @@ export class ProjectController {
     return this.projectRepository.Issues(id).find({
       where: {IsActive: true},
     });
+  }
+
+  @authenticate('jwt')
+  @get('/projects/{id}/config')
+  async findConfigByProjectId(
+    @inject('datasources.db') dataSource: DbDataSource,
+    @param.path.string('id') id: string,
+  ): Promise<any> {
+    const dataResult: ProjectConfig[] = await dataSource.execute(`
+      select 
+      ContentTypeDetail.Id,
+      ContentType.Name,
+      ContentType.Description as ContentTypeDescription,
+      IconName,
+      Styles,
+      CategoryType.Id as CategoryTypeId,
+      CategoryType.Name as CategoryTypeName,
+      CategoryType.Description as CategoryTypeDescription,
+      IsActive,
+      IsDefault
+      from ContentType
+      inner join CategoryType ON  CategoryType.Id = ContentType.CategoryTypeId
+      inner join ContentTypeDetail ON ContentType.Id = ContentTypeDetail.ContentTypeId
+      where ContentTypeDetail.ProjectId = '${id}'
+    `);
+    const member = await dataSource.execute(`
+      select 
+      [dbo].[User].Id,
+      UserName,
+      FirstName,
+      LastName,
+      Gender,
+      Address,
+      Role.Description as RoleDescription,
+      Role.Name as RoleName
+      from ProjectMember
+      inner join UserRole on UserRole.Id = ProjectMember.UserRoleId
+      inner join Role on Role.Id = UserRole.RoleId
+      inner join [dbo].[User] on [dbo].[User].Id = UserRole.UserId
+      where ProjectMember.ProjectId = '${id}'
+    `);
+    const temp = _.groupBy(dataResult, 'CategoryTypeName');
+    Object.assign(temp, {
+      Members: member,
+    });
+    return temp;
   }
 }
